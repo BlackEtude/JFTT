@@ -1,8 +1,8 @@
 scan: scan.c
 	gcc -o scan scan.c
 
-scan.c: scan.l
-	flex -oscan.c scan.l
+scan.c: zad2.l
+	flex -oscan.c zad2.l
 
 clean:
 	rm scan.c scan
