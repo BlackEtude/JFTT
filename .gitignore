@@ -2,8 +2,12 @@
 FLEX/zad1/scan
 FLEX/zad1/text
 FLEX/zad1/out
+FLEX/zad4/scan
+FLEX/zad3/scan.c
+FLEX/zad3/scan
 BISON/texput.log
 BISON/calc_flex.c
 BISON/calc_bison.h
 BISON/calc_bison.c
 BISON/calc
+

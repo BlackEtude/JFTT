@@ -8,8 +8,6 @@
 	void yyerror(char const *);
 	void clear_buffer();
 	void negate_value(long int neg_val);
-	void showOut();
-	void add_to_out(char *buff);
 	long int value_in_base(long int a);
 	long int add(long int a, long int b);
 	long int subtract(long int a, long int b);
@@ -50,19 +48,19 @@ line:
 ;
 
 exp:
-  NUM				{long int n = value_in_base($1); $$ = n; sprintf(buff, "%li ", n); add_to_out(buff);}
-| exp ADD exp		{$$ = add($1, $3); add_to_out("+ ");} 
-| exp SUB exp		{$$ = subtract($1, $3); add_to_out("- ");} 
-| exp MUL exp		{$$ = multiply($1, $3); add_to_out("* ");} 
-| exp POW exp		{$$ = power($1, $3); add_to_out("^ ");}
+  NUM				{long int n = value_in_base($1); $$ = n; sprintf(buff, "%li ", n); strcat(out, buff);}
+| exp ADD exp		{$$ = add($1, $3); strcat(out, "+ ");} 
+| exp SUB exp		{$$ = subtract($1, $3); strcat(out, "- ");} 
+| exp MUL exp		{$$ = multiply($1, $3); strcat(out, "* ");} 
+| exp POW exp		{$$ = power($1, $3); strcat(out, "^ ");}
 | LBR exp RBR		{$$ = $2;}
-| SUB exp %prec NEG { $$ = subtract(0, $2); negate_value(-$2);}
+| SUB exp %prec NEG {negate_value($2); $$ = subtract(0, $2); }
 
 | exp DIV exp		{if($3 == 0) {error = 1; yyerror("Error: dividing by 0\n");}
-					else {$$ = divide($1, $3); add_to_out("/ ");}
+					else {$$ = divide($1, $3); strcat(out,  "/ ");}
 					}
 | exp MOD exp		{if($3 == 0) {error = 1; yyerror("Error: dividing mod by 0\n");}
-					else {$$ = modulo($1, $3); add_to_out("% ");}
+					else {$$ = modulo($1, $3); strcat(out, "% ");}
 					}
 | UND				{error = 1;}
 
@@ -77,41 +75,20 @@ void yyerror(char const *s) {
 	clear_buffer();
 }
 
-void add_to_out(char *buff) {
-	strcat(out, buff);
-	printf("Out: %s\n", out);
-}
-
-void negate_value(long int neg_val) {
-	printf("Out before neg_val: %s\n", out);
-	long int new_value = value_in_base(neg_val);
-	long int n = new_value;
-	long int new_value_length = 0;
-	while(n > 0) {
-		n /= 10;
-		new_value_length++;
+void negate_value(long int val) {
+	//go through 'out' from the end until reach space, erase; '-2' because need to skip also the last spacebar
+	int out_len = strlen(out) - 2;
+	while(out_len >= 0) {
+		if(out[out_len] == ' ') break;
+		out[out_len] = 0;
+		out_len--;
 	}
 
-	char char_value[new_value_length];
-	sprintf(char_value, "%d", new_value);
+	char number[BUFF_SIZE];
+	long int new_value = value_in_base(-val);
 
-	//clear old 'out'
-	// int j = strlen(out) - 2;
- //  	while(out[j] > 47 && out[j] < 58)	{
- //    	out[j + 1] = ' ';
- //    	j--; 
- //  	}
- //  	out[j+1] = ' ';
-
-	//save in 'out' in reversed order
-	long int i = new_value_length - 1;
-	while(new_value_length > 0) {
-		out[i+1] = char_value[new_value_length];
-		i--;
-		new_value_length--;
-	}
-	out[i+1] = char_value[0];
-	out[strlen(out)] = ' ';
+	sprintf(number, "%li ", new_value);
+	strcat(out, number);
 }
 
 void clear_buffer() {
