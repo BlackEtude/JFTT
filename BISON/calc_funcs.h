@@ -51,17 +51,13 @@ long int divide(long int a, long int b) {
 
 	long int x, y;
 	extendedGCD(b, BASE, &x, &y);
-    // printf("x: %ld, y: %ld\n\n", x, y);
 
 	long int div = multiply(a, x);
 	return div;
 }
 
 long int power(long int x, long int n) {
-    printf("wykladnik=%li\n", n);
 	x = value_in_base(x);
-
-	// printf("Power: x = %li, n = %li\n", x, n);
 
 	if (n == 0)
     	return 1;
@@ -85,50 +81,3 @@ long int power(long int x, long int n) {
     }
     return multiply(x, y);
 }
-
-long int modulo(long int a, long int b) {
-	a = value_in_base(a);
-	b = value_in_base(b);
-
-	printf("Modulo: a = %li, b = %li\n", a, b);
-
-	long int m = (a % b);
-
-	return m;
-}
-
-// int main() {
-// 	// MAX signed long int = 9223372036854775807 (64bit compiler) (%li)
-// 	// long int c = LONG_MAX;
-// 	// printf("MAX long int: %li\n", c);
-
-// 	// addition
-// 	long int a = 1234577;
-// 	long int b = -1;
-
-// 	printf("add: %li\n\n", add(a, b));
-
-// 	// Subtraction
-// 	a = 0;
-// 	b = 0;
-// 	printf("subtract: %li\n\n", add(a, b));
-
-// 	// Multiplication
-// 	a = 1234576;
-// 	b = 1234576;
-// 	printf("multi: %li\n\n", multiply(a, b));
-
-// 	// Division
-//     a = 1, b = -580978;
-//     printf("divide: %li\n\n", divide(a, b));
-
-//     // Power
-//     a = 2, b = 100;
-//     printf("power: %li\n\n", power(a, b));
-
-//     // Modulo
-//     a = 2898789S, b = 100;
-//     printf("modulo: %li\n\n", modulo(a, b));
-
-//     return 0;
-// }
