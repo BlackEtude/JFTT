@@ -14,7 +14,6 @@
 	long int multiply(long int a, long int b);
 	long int divide(long int a, long int b);
 	long int power(long int x, long int n);
-	long int modulo(long int a, long int b);
 
 	int error = 0;
 	char buff[20];
@@ -25,7 +24,7 @@
 %token RBR LBR
 %left ADD SUB
 %left MUL DIV MOD
-%right POW
+%right POW MPOW
 %precedence NEG
 %token UND
 
@@ -44,7 +43,7 @@ line:
 	error = 0;
 	clear_buffer();
 	}
-| exp error {yyerror("Something went wrong.....\n");}
+| exp error {yyerror("");}
 ;
 
 exp:
@@ -53,14 +52,12 @@ exp:
 | exp SUB exp		{$$ = subtract($1, $3); strcat(out, "- ");} 
 | exp MUL exp		{$$ = multiply($1, $3); strcat(out, "* ");} 
 | exp POW exp		{$$ = power($1, $3); strcat(out, "^ ");}
+| exp MPOW exp		{$$ = power($1, -$3); strcat(out, "^ ");}
 | LBR exp RBR		{$$ = $2;}
 | SUB exp %prec NEG {negate_value($2); $$ = subtract(0, $2); }
 
 | exp DIV exp		{if($3 == 0) {error = 1; yyerror("Error: dividing by 0\n");}
 					else {$$ = divide($1, $3); strcat(out,  "/ ");}
-					}
-| exp MOD exp		{if($3 == 0) {error = 1; yyerror("Error: dividing mod by 0\n");}
-					else {$$ = modulo($1, $3); strcat(out, "% ");}
 					}
 | UND				{error = 1;}
 

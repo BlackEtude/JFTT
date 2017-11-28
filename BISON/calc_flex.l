@@ -16,7 +16,7 @@
 "*"					{return MUL;}
 "/"					{return DIV;}
 "^"					{return POW;}
-"%"					{return MOD;}
+"^-"				{return MPOW;}
 "(" 				{return LBR;}
 ")"					{return RBR;}
 "\\\n"				;

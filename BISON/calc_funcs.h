@@ -58,6 +58,7 @@ long int divide(long int a, long int b) {
 }
 
 long int power(long int x, long int n) {
+    printf("wykladnik=%li\n", n);
 	x = value_in_base(x);
 
 	// printf("Power: x = %li, n = %li\n", x, n);
